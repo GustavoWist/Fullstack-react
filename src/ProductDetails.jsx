@@ -83,7 +83,6 @@ function ProductDetails() {
   return (
     <div className="edit-product-container">
       <h1>Editar Produto</h1>
-
       {imagemPreview || produto.imagem ? (
         <img
           src={imagemPreview || `http://localhost:5000${produto.imagem}`}

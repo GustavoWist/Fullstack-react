@@ -23,9 +23,6 @@ export default function Dashboard({ onLogout }) {
         <Link to="/vendas">
           <button>Vender Produto</button>
         </Link>
-        <Link to="/historico_vendas">
-          <button>Histórico de Vendas</button>
-        </Link>
       </div>
       <button onClick={handleLogout} className="logout-button fade-in-up" style={{ animationDelay: '0.4s' }}>Sair</button>
     </div>

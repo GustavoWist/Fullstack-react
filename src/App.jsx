@@ -11,7 +11,6 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import Register from './pages/Register';
 import Ativacao from './pages/Activate';
 import Sales from './pages/Sales';
-import SalesHistory from './pages/SalesHistory';
 
 // Rota protegida
 function RotaProtegida({ isLoggedIn, children }) {
@@ -83,14 +82,6 @@ export default function AppRoutes() {
         element={
           <RotaProtegida isLoggedIn={isLoggedIn}>
             <Sales />
-          </RotaProtegida>
-        }
-      />
-      <Route
-        path="/historico_vendas"
-        element={
-          <RotaProtegida isLoggedIn={isLoggedIn}>
-            <SalesHistory />
           </RotaProtegida>
         }
       />

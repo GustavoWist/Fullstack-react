@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import "./ProductDetails.css";
+import "./style.css";
 
-function ProductDetails() {
+export default function ProductDetails() {
   const { id } = useParams();
   const [produto, setProduto] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -77,7 +77,7 @@ function ProductDetails() {
     }
   };
 
-  if (loading) return <p>Wait...</p>;
+  if (loading) return <p>Carregando...</p>;
   if (error) return <p>{error}</p>;
 
   return (
@@ -88,35 +88,29 @@ function ProductDetails() {
         <img
           src={imagemPreview || `http://localhost:5000${produto.imagem}`}
           alt={produto.nome}
-          style={{
-            width: "357px",
-            height: "auto",
-            border: "0px",
-            borderRadius: "100px",
-            marginBottom: "0rem",
-          }}
+          className="product-image"
         />
       ) : (
-        <p style={{ fontStyle: "italic", color: "gray" }}>Sem imagem</p>
+        <p className="no-image">Sem imagem</p>
       )}
 
-      <div style={{ marginBottom: "1rem" }}>
-        <label>Nome:</label><br />
+      <div className="input-group">
+        <label>Nome:</label>
         <input name="nome" value={produto.nome} onChange={handleInputChange} />
       </div>
 
-      <div style={{ marginBottom: "1rem" }}>
-        <label>Preço:</label><br />
+      <div className="input-group">
+        <label>Preço:</label>
         <input name="preco" value={produto.preco} onChange={handleInputChange} />
       </div>
 
-      <div style={{ marginBottom: "1rem" }}>
-        <label>Quantidade:</label><br />
+      <div className="input-group">
+        <label>Quantidade:</label>
         <input name="quantidade" value={produto.quantidade} onChange={handleInputChange} />
       </div>
 
-      <div style={{ marginBottom: "1rem" }}>
-        <label>Status:</label><br />
+      <div className="input-group">
+        <label>Status:</label>
         <select name="status" value={produto.status} onChange={handleInputChange}>
           <option value="Ativo">Ativo</option>
           <option value="Inativo">Inativo</option>
@@ -124,18 +118,20 @@ function ProductDetails() {
       </div>
 
       <div className="image-upload-container">
-        <label htmlFor={`upload-${produto.id}`} className="custom-upload-label">Atualizar imagem</label><br />
+        <label htmlFor={`upload-${produto.id}`} className="custom-upload-label">
+          Atualizar imagem
+        </label>
         <input
-            id={`upload-${produto.id}`}
-            type="file"
-            accept="image/*"
-            onChange={handleImagemChange}
+          id={`upload-${produto.id}`}
+          type="file"
+          accept="image/*"
+          onChange={handleImagemChange}
         />
       </div>
 
-      <button onClick={salvarAlteracoes}>Salvar Alterações</button>
+      <button onClick={salvarAlteracoes} className="save-button">
+        Salvar Alterações
+      </button>
     </div>
   );
 }
-
-export default ProductDetails;

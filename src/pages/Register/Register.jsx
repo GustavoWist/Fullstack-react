@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './register.css'; // crie esse css se quiser estilizar
+import './style.css';
 
-function Register() {
+export default function Register() {
   const [formData, setFormData] = useState({
     nome: '',
     cnpj: '',
@@ -38,13 +38,18 @@ function Register() {
         setMensagem(data.message || 'Usuário registrado com sucesso!');
         setTimeout(() => {
           navigate('/ativar');
-        }, 3000); // redireciona após 3s
+        }, 3000);
       } else {
         setErro(data.error || 'Erro no registro.');
       }
     } catch (err) {
+      console.log(err);
       setErro('Erro na conexão com o servidor.');
     }
+  };
+
+  const handleNavigateToLogin = () => {
+    navigate('/login');
   };
 
   return (
@@ -71,8 +76,13 @@ function Register() {
 
         <button type="submit">Registrar</button>
       </form>
+
+      <div style={{ marginTop: '0rem', textAlign: 'center' }}>
+        <p>Já tem uma conta?</p>
+        <button onClick={handleNavigateToLogin} className="register-custom-upload-label" style={{width: 'fit-content', margin: '0 auto'}}>
+          Entrar
+        </button>
+      </div>
     </div>
   );
 }
-
-export default Register;

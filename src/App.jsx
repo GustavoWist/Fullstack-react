@@ -1,100 +1,90 @@
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
-import { useState } from 'react';
-import './App.css';
-import eu from '/eu.jpg';
-import Login from './login';
-import Products from './products';
-import Registrar_produto from './registrar_produto';
-import ProductDetails from './ProductDetails';
-import Dashboard from './Dashboard';
-import Register from './Register';
-import Ativacao from './Activate';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
-function Home() {
-  return (
-    <>
-      <div>
-        <a href="https://linkedin.com/in/gustavo-santos-319317269/" target='_blank'>
-          <img src={eu} className="logo eu" alt="EU logo" />
-        </a>
-      </div>
-      <div className="card">
-        <Link to="/produtos">
-          <button>Produtos</button>
-        </Link>
-      </div>
-      <div className='regisprod'>
-        <Link to='/registrar_produto'>
-          <button>Registrar Produto</button>
-        </Link>
-      </div>
-    </>
-  );
-}
+import './App.css';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import RegisterProduct from './pages/RegisterProduct';
+import Products from './pages/Products';
+import ProductDetails from './pages/ProductDetails';
+import Dashboard from './pages/Dashboard/Dashboard';
+import Register from './pages/Register';
+import Ativacao from './pages/Activate';
+import Sales from './pages/Sales';
 
 // Rota protegida
 function RotaProtegida({ isLoggedIn, children }) {
   return isLoggedIn ? children : <Navigate to="/login" replace />;
 }
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+export default function AppRoutes() {
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem('token') !== null;
+});
+  const logout = () => {
+  localStorage.removeItem('token');
+  setIsLoggedIn(false); // o useEffect acima cuidará do redirecionamento
+};
 
   return (
-    <Router>
-      <Routes>
-        {/* Login redireciona para dashboard se logado */}
-        <Route path="/login" element={<Login onLogin={() => setIsLoggedIn(true)} />} />
-        
-        <Route path="/ativar" element={<Ativacao />} />
-
-
-        {/* Dashboard após login */}
-        <Route
-          path="/dashboard"
-          element={
-            <RotaProtegida isLoggedIn={isLoggedIn}>
-              <Dashboard />
-            </RotaProtegida>
-          }
-        />
-        <Route path="/register" element={<Register />} />
-        {/* Outras rotas protegidas */}
-        <Route
-          path="/"
-          element={
-            <RotaProtegida isLoggedIn={isLoggedIn}>
-              <Home />
-            </RotaProtegida>
-          }
-        />
-        <Route
-          path="/produtos"
-          element={
-            <RotaProtegida isLoggedIn={isLoggedIn}>
-              <Products />
-            </RotaProtegida>
-          }
-        />
-        <Route
-          path="/registrar_produto"
-          element={
-            <RotaProtegida isLoggedIn={isLoggedIn}>
-              <Registrar_produto />
-            </RotaProtegida>
-          }
-        />
-        <Route
-          path="/produto/:id"
-          element={
-            <RotaProtegida isLoggedIn={isLoggedIn}>
-              <ProductDetails />
-            </RotaProtegida>
-          }
-        />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/" element={
+        isLoggedIn ? <Navigate to='./dashboard' replace /> :
+        <Home />} />
+      <Route
+        path="/login"
+        element={
+          isLoggedIn ? <Navigate to="/dashboard" replace /> : <Login onLogin={() => 
+            setIsLoggedIn(true)} />
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          isLoggedIn ? <Navigate to="/dashboard" replace /> : <Register />
+        }
+      />
+      <Route path="/ativar" element={<Ativacao />} />
+      <Route
+        path="/dashboard"
+        element={
+          <RotaProtegida isLoggedIn={isLoggedIn}>
+            <Dashboard onLogout={logout} />
+          </RotaProtegida>
+        }
+      />
+      <Route
+        path="/produtos"
+        element={
+          <RotaProtegida isLoggedIn={isLoggedIn}>
+            <Products />
+          </RotaProtegida>
+        }
+      />
+      <Route
+        path="/registrar_produto"
+        element={
+          <RotaProtegida isLoggedIn={isLoggedIn}>
+            <RegisterProduct />
+          </RotaProtegida>
+        }
+      />
+      <Route
+        path="/produto/:id"
+        element={
+          <RotaProtegida isLoggedIn={isLoggedIn}>
+            <ProductDetails />
+          </RotaProtegida>
+        }
+      />
+      <Route
+        path="/vendas"
+        element={
+          <RotaProtegida isLoggedIn={isLoggedIn}>
+            <Sales />
+          </RotaProtegida>
+        }
+      />
+    </Routes>
   );
 }
-
-export default App;
